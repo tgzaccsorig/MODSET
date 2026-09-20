@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModSet — Minecraft Modpack Builder</title>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:#08090d;color:#fff;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button{font:inherit}.container{width:min(1180px,calc(100% - 40px));margin:auto}
+.nav{height:76px;border-bottom:1px solid #20222a;background:rgba(8,9,13,.78);backdrop-filter:blur(18px);position:sticky;top:0;z-index:20}
+.navin{height:100%;display:flex;align-items:center;justify-content:space-between}.logo{font-size:21px;font-weight:850;letter-spacing:-.7px}.logo span{color:#8b6cff}
+.links{display:flex;gap:28px;color:#a1a1aa;font-size:14px}.links a{color:inherit;text-decoration:none}.links a:hover{color:#fff}
+.navbtn{border:1px solid #30323d;background:#15171e;color:#fff;border-radius:10px;padding:10px 15px;cursor:pointer}
+.hero{min-height:660px;display:flex;align-items:center;position:relative;overflow:hidden}
+.glow{position:absolute;width:620px;height:620px;border-radius:50%;background:#7c5cfc;filter:blur(170px);opacity:.13;right:-180px;top:-160px}
+.glow2{position:absolute;width:420px;height:420px;border-radius:50%;background:#4ade80;filter:blur(180px);opacity:.06;left:-180px;bottom:-180px}
+.heroGrid{display:grid;grid-template-columns:1.08fr .92fr;gap:70px;align-items:center;position:relative}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid #2b2d38;background:#101219;border-radius:999px;color:#b9b4ff;font-size:12px;margin-bottom:22px}
+.dot{width:7px;height:7px;border-radius:50%;background:#8b6cff;box-shadow:0 0 12px #8b6cff}
+h1{font-size:clamp(45px,6vw,76px);line-height:.98;letter-spacing:-4px;margin:0 0 24px;max-width:700px}
+h1 span{color:#8b6cff}
+.hero p{font-size:18px;line-height:1.65;color:#a1a1aa;max-width:600px;margin:0 0 32px}
+.actions{display:flex;gap:12px;flex-wrap:wrap}.primary{border:0;background:#7c5cfc;color:#fff;padding:14px 20px;border-radius:12px;font-weight:750;cursor:pointer;box-shadow:0 10px 35px #7c5cfc30}.primary:hover{background:#896dff}
+.secondary{border:1px solid #30323d;background:#15171e;color:#fff;padding:14px 20px;border-radius:12px;cursor:pointer}
+.preview{border:1px solid #292b35;background:#101218;border-radius:20px;padding:18px;box-shadow:0 30px 100px #0008;transform:rotate(1.5deg)}
+.windowbar{display:flex;gap:6px;padding:3px 0 16px}.circle{width:8px;height:8px;border-radius:50%;background:#30323d}
+.previewTitle{font-weight:750;font-size:14px;margin-bottom:15px}.step{display:flex;align-items:center;gap:12px;padding:13px;border-radius:12px;margin:7px 0;color:#a1a1aa;font-size:13px}.step.active{background:#1b182b;color:#fff;border:1px solid #463a78}.num{width:25px;height:25px;border-radius:8px;display:grid;place-items:center;background:#20222a;font-size:11px}.active .num{background:#7c5cfc}
+.pack{margin-top:16px;padding:15px;border:1px solid #282a34;border-radius:14px;background:#0c0e13}.packhead{display:flex;justify-content:space-between;margin-bottom:12px}.green{color:#4ade80;font-size:12px}.mods{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mod{padding:10px;border-radius:10px;background:#15171e;color:#c8c8ce;font-size:11px;display:flex;justify-content:space-between}.check{color:#4ade80}
+.section{padding:90px 0}.sectionHead{display:flex;justify-content:space-between;align-items:end;margin-bottom:28px}.eyebrow{color:#8b6cff;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px}.section h2{font-size:38px;letter-spacing:-1.8px;margin:8px 0 0}.muted{color:#71717a;font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{border:1px solid #242630;background:#101218;border-radius:16px;padding:22px;transition:.2s}.card:hover{transform:translateY(-4px);border-color:#3c3a4c}.icon{width:42px;height:42px;border-radius:12px;background:#1a1728;display:grid;place-items:center;font-size:20px;margin-bottom:18px}.card h3{margin:0 0 8px;font-size:17px}.card p{margin:0;color:#8f9098;line-height:1.6;font-size:13px}
+.builder{border:1px solid #282a34;background:#0f1117;border-radius:22px;overflow:hidden}.builderTop{padding:24px;border-bottom:1px solid #252731;display:flex;justify-content:space-between;align-items:center}.builderTop strong{font-size:17px}.tag{font-size:11px;color:#a1a1aa;border:1px solid #2c2e39;padding:7px 9px;border-radius:8px}
+.builderBody{display:grid;grid-template-columns:230px 1fr 250px;min-height:370px}.sidebar{border-right:1px solid #252731;padding:18px}.sideStep{padding:12px;border-radius:10px;margin-bottom:5px;font-size:13px;color:#777983}.sideStep.active{background:#1a1728;color:#fff}.content{padding:28px}.content h3{font-size:25px;letter-spacing:-1px;margin:0 0 7px}.content p{color:#85868e;font-size:13px;margin:0 0 22px}.versionGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.version{border:1px solid #292b35;background:#14161d;padding:15px;border-radius:11px;text-align:center;color:#d4d4d8;font-size:13px}.version.selected{border-color:#7c5cfc;background:#19162a;box-shadow:inset 0 0 0 1px #7c5cfc}.summary{border-left:1px solid #252731;padding:20px;background:#0c0e13}.summary h4{margin:0 0 15px}.summaryLine{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #20222a;color:#92939b;font-size:12px}.summaryLine b{color:#fff;font-weight:600}.summaryBtn{width:100%;margin-top:18px}
+.footer{border-top:1px solid #20222a;padding:35px 0;color:#666873;font-size:12px;display:flex;justify-content:space-between}
+@media(max-width:850px){.links{display:none}.heroGrid{grid-template-columns:1fr}.preview{display:none}.hero{min-height:600px}.cards{grid-template-columns:1fr}.builderBody{grid-template-columns:1fr}.sidebar,.summary{display:none}.versionGrid{grid-template-columns:1fr 1fr}.section{padding:65px 0}h1{letter-spacing:-2.5px}.footer{display:block}.footer div+div{margin-top:10px}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="container navin">
+    <div class="logo">MOD<span>SET</span></div>
+    <div class="links"><a href="#builder">Конструктор</a><a href="#features">Возможности</a><a href="#packs">Сборки</a></div>
+    <button class="navbtn" onclick="document.querySelector('#builder').scrollIntoView()">Начать сборку</button>
+  </div>
+</nav>
+
+<main>
+<section class="hero">
+  <div class="glow"></div><div class="glow2"></div>
+  <div class="container heroGrid">
+    <div>
+      <div class="badge"><i class="dot"></i> Minecraft Modpack Builder</div>
+      <h1>Собери свой <span>Minecraft.</span></h1>
+      <p>Выбери версию, загрузчик и то, что тебе нужно. MODSET подберёт совместимые моды, проверит зависимости и соберёт готовую сборку.</p>
+      <div class="actions">
+        <button class="primary" onclick="document.querySelector('#builder').scrollIntoView()">Начать сборку →</button>
+        <button class="secondary" onclick="document.querySelector('#features').scrollIntoView()">Как это работает</button>
+      </div>
+    </div>
+    <div class="preview">
+      <div class="windowbar"><i class="circle"></i><i class="circle"></i><i class="circle"></i></div>
+      <div class="previewTitle">Создание сборки</div>
+      <div class="step active"><span class="num">1</span> Версия Minecraft <span style="margin-left:auto">✓</span></div>
+      <div class="step active"><span class="num">2</span> Загрузчик <span style="margin-left:auto">✓</span></div>
+      <div class="step"><span class="num">3</span> Цели</div>
+      <div class="step"><span class="num">4</span> Моды</div>
+      <div class="pack">
+        <div class="packhead"><b>Моя сборка</b><span class="green">12 модов</span></div>
+        <div class="mods">
+          <div class="mod">Sodium <span class="check">✓</span></div>
+          <div class="mod">Lithium <span class="check">✓</span></div>
+          <div class="mod">FerriteCore <span class="check">✓</span></div>
+          <div class="mod">Mod Menu <span class="check">✓</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features">
+<div class="container">
+  <div class="sectionHead"><div><div class="eyebrow">Почему MODSET</div><h2>Сложное — в один клик.</h2></div><div class="muted">Без ручной возни с зависимостями</div></div>
+  <div class="cards">
+    <div class="card"><div class="icon">⚡</div><h3>Умный подбор</h3><p>Выбираешь цель — сайт подбирает подходящие моды под твою версию и загрузчик.</p></div>
+    <div class="card"><div class="icon">🧩</div><h3>Зависимости</h3><p>Не нужно искать библиотеки вручную. Обязательные зависимости добавляются автоматически.</p></div>
+    <div class="card"><div class="icon">📦</div><h3>Готовая сборка</h3><p>Проверяем совместимость и собираем выбранные моды в готовый архив.</p></div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="builder">
+<div class="container">
+  <div class="sectionHead"><div><div class="eyebrow">Builder</div><h2>Попробуй конструктор.</h2></div></div>
+  <div class="builder">
+    <div class="builderTop"><strong>Создание сборки</strong><span class="tag">Шаг 1 из 6</span></div>
+    <div class="builderBody">
+      <aside class="sidebar">
+        <div class="sideStep active">01 &nbsp; Версия</div>
+        <div class="sideStep">02 &nbsp; Загрузчик</div>
+        <div class="sideStep">03 &nbsp; Цели</div>
+        <div class="sideStep">04 &nbsp; Моды</div>
+        <div class="sideStep">05 &nbsp; Проверка</div>
+        <div class="sideStep">06 &nbsp; Готово</div>
+      </aside>
+      <div class="content">
+        <h3>Выберите версию Minecraft</h3>
+        <p>Мы покажем только версии, которые доступны для модов.</p>
+        <div class="versionGrid">
+          <div class="version">1.21.11</div><div class="version">1.21.10</div><div class="version selected">1.21.1</div>
+          <div class="version">1.20.1</div><div class="version">1.19.2</div><div class="version">1.18.2</div>
+        </div>
+      </div>
+      <aside class="summary">
+        <h4>Твоя сборка</h4>
+        <div class="summaryLine"><span>Версия</span><b>1.21.1</b></div>
+        <div class="summaryLine"><span>Загрузчик</span><b>Не выбран</b></div>
+        <div class="summaryLine"><span>Модов</span><b>0</b></div>
+        <button class="primary summaryBtn" onclick="alert('В демо это следующий шаг 👀')">Далее →</button>
+      </aside>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="packs">
+<div class="container">
+  <div class="sectionHead"><div><div class="eyebrow">Подборки</div><h2>Готовые идеи.</h2></div></div>
+  <div class="cards">
+    <div class="card"><div class="icon">⚡</div><h3>FPS Boost</h3><p>Оптимизация производительности без лишней нагрузки на систему.</p></div>
+    <div class="card"><div class="icon">🎨</div><h3>Visual</h3><p>Визуальные улучшения, интерфейс и приятные мелочи.</p></div>
+    <div class="card"><div class="icon">🛠️</div><h3>QoL</h3><p>Полезные моды, которые делают обычную игру удобнее.</p></div>
+  </div>
+</div>
+</section>
+</main>
+
+<footer class="container footer"><div>© 2026 MODSET</div><div>Minecraft is a trademark of Mojang Studios. This project is not affiliated with Mojang.</div></footer>
+</body>
+</html>
