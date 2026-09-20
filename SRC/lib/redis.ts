@@ -1,5 +1,6 @@
-// db.ts
-import { PrismaClient } from "@prisma/client";
-const g = globalThis as unknown as { prisma?: PrismaClient };
-export const prisma = g.prisma ?? new PrismaClient();
-if (process.env.NODE_ENV !== "production") g.prisma = prisma;
+// redis.ts
+import Redis from "ioredis";
+import { env } from "./env";
+const g = globalThis as unknown as { redis?: Redis };
+export const redis = g.redis ?? new Redis(env.REDIS_URL, { maxRetriesPerRequest: null });
+if (process.env.NODE_ENV !== "production") g.redis = redis;
