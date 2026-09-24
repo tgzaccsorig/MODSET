@@ -1,0 +1,3 @@
+function go(){document.querySelector('#builder').scrollIntoView({behavior:'smooth'})}
+function next(n){document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));document.querySelector('#p'+n).classList.add('on');document.querySelectorAll('#steps b').forEach((x,i)=>x.classList.toggle('on',i===n-1))}
+function pick(x){x.parentElement.querySelectorAll('.choice').forEach(b=>b.classList.remove('on'));x.classList.add('on')}
